@@ -1,4 +1,3 @@
-var mood = "NEGATIVE";
 var stream = document.getElementsByClassName("expanding-stream-item");
 
 for (var i = 0; i < stream.length; i++) {
@@ -18,7 +17,7 @@ for (var i = 0; i < stream.length; i++) {
 	    	document.getElementById(stream[i].id).style.backgroundColor="red";
 	    	document.getElementById(stream[i].id).className += " joyfeed-filtered";
 	    } else if (score > 0) {
-	    	document.getElementById(stream[i].id).style.backgroundColor="green";
+	    	document.getElementById(stream[i].id).style.backgroundColor="#71d070";
 	    } else if (score < -0.5 && mood === "NEUTRAL") {
 	    	console.log(document.getElementById(stream[i].id));
 	    	document.getElementById(stream[i].id).style.backgroundColor="red";
