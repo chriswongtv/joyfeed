@@ -33,4 +33,4 @@ for (var i = 0; i < stream.length; i++) {
 	xhr.send(data);
 }
 
-document.getElementById('tweet').textContent = 'Tweets analyzed!';
+document.getElementsByTagName("body").style.opacity="1.0";
