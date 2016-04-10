@@ -15,13 +15,23 @@
     "open_in_tab": true
   },
   "background": {
-    "scripts": ["background.js"]
+    "scripts": ["jquery.js", "background.js"]
   },
+  "content_scripts": [
+    {
+      "matches": ["http://www.twitter.com/*"],
+      //"css": ["mystyles.css"],
+      "js": ["jquery.js", "twitter.js"]
+    }
+  ],
   "permissions": [
     "activeTab",
     "background",
+    "tabs",
     "https://ajax.googleapis.com/",
     "https://api.imgur.com/",
-    "https://api.projectoxford.ai/"
+    "https://api.projectoxford.ai/",
+    "https://twitter.com/",
+    "https://api.havenondemand.com/"
   ]
 }
