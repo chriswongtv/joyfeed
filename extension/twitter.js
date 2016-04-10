@@ -11,13 +11,14 @@ for (var i = 0; i < stream.length; i++) {
 
 	xhr.addEventListener("readystatechange", function () {
 	  if (this.readyState === 4) {
-	    console.log(JSON.parse(this.responseText));
 	    var score = JSON.parse(this.responseText).aggregate.score;
 
 	    if (score < 0 && mood === "NEGATIVE") {
 	    	console.log(document.getElementById(stream[i].id));
 	    	document.getElementById(stream[i].id).style.backgroundColor="red";
 	    	document.getElementById(stream[i].id).className += " joyfeed-filtered";
+	    } else if (score > 0) {
+	    	document.getElementById(stream[i].id).style.backgroundColor="green";
 	    }
 	  }
 	});
