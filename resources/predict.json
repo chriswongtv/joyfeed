@@ -1,0 +1,15 @@
+{
+	"name":"name",
+	"fields":[
+		{"name":"Anger","type":"RICH_TEXT"},
+		{"name":"Contempt","type":"RICH_TEXT"},
+		{"name":"Disgust","type":"RICH_TEXT"},
+		{"name":"Fear","type":"RICH_TEXT"},
+		{"name":"Happiness","type":"RICH_TEXT"},
+		{"name":"Neutral","type":"RICH_TEXT"},
+		{"name":"Sadness","type":"RICH_TEXT"}
+	],
+	"values":[
+		{"row":["LOW","LOW","LOW","LOW","LOW","HIGH","LOW"]}
+	]
+}

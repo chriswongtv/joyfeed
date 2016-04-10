@@ -52,35 +52,42 @@ function joyify() {
           console.log(res);
           console.log(res[0].scores);
 
-          var dataURI = "Anger,Contempt,Disgust,Fear,Happiness,Neutral,Sadness\nRICH_TEXT,RICH_TEXT,RICH_TEXT,RICH_TEXT,RICH_TEXT,RICH_TEXT,RICH_TEXT\n";
-          dataURI += getEmotion(res[0].scores.anger) + "," + getEmotion(res[0].scores.contempt) + "," + getEmotion(res[0].scores.disgust) + "," + getEmotion(res[0].scores.fear) + "," + getEmotion(res[0].scores.happiness) + "," + getEmotion(res[0].scores.neutral) + "," + getEmotion(res[0].scores.sadness);
+          // var dataURI = "Anger,Contempt,Disgust,Fear,Happiness,Neutral,Sadness\nRICH_TEXT,RICH_TEXT,RICH_TEXT,RICH_TEXT,RICH_TEXT,RICH_TEXT,RICH_TEXT\n";
+          // dataURI += getEmotion(res[0].scores.anger) + "," + getEmotion(res[0].scores.contempt) + "," + getEmotion(res[0].scores.disgust) + "," + getEmotion(res[0].scores.fear) + "," + getEmotion(res[0].scores.happiness) + "," + getEmotion(res[0].scores.neutral) + "," + getEmotion(res[0].scores.sadness);
 
-          var predictData = new FormData();
-          predictData.append("file", dataURI);
-          predictData.append("service_name", "joyfeed_1");
-          predictData.append("format", "csv");
+          // var dataJSON = '{"name":"name", "fields":[{"name":"Anger","type":"RICH_TEXT"}, {"name":"Contempt","type":"RICH_TEXT"}, {"name":"Disgust","type":"RICH_TEXT"}, {"name":"Fear","type":"RICH_TEXT"}, {"name":"Happiness","type":"RICH_TEXT"}, {"name":"Neutral","type":"RICH_TEXT"}, {"name":"Sadness","type":"RICH_TEXT"} ], "values":[{"row":["LOW","LOW","LOW","LOW","LOW","HIGH","LOW"]} ] }';
 
-          var predictXhr = new XMLHttpRequest();
-          predictXhr.withCredentials = true;
+          console.log("{\"name\":\"name\", \"fields\":[{\"name\":\"Anger\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Contempt\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Disgust\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Fear\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Happiness\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Neutral\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Sadness\",\"type\":\"RICH_TEXT\"} ], \"values\":[{\"row\":[\"" + getEmotion(res[0].scores.anger) + "\",\"" + getEmotion(res[0].scores.contempt) + "\",\"" + getEmotion(res[0].scores.disgust) + "\",\"" + getEmotion(res[0].scores.fear) + "\",\"" + getEmotion(res[0].scores.happiness) + "\",\"" + getEmotion(res[0].scores.neutral) + "\",\"" + getEmotion(res[0].scores.sadesss) + "\"]} ] }");
 
-          console.log(dataURI);
+          var data = new FormData();
+          data.append("json", "{\"name\":\"name\", \"fields\":[{\"name\":\"Anger\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Contempt\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Disgust\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Fear\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Happiness\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Neutral\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Sadness\",\"type\":\"RICH_TEXT\"} ], \"values\":[{\"row\":[\"" + getEmotion(res[0].scores.anger) + "\",\"" + getEmotion(res[0].scores.contempt) + "\",\"" + getEmotion(res[0].scores.disgust) + "\",\"" + getEmotion(res[0].scores.fear) + "\",\"" + getEmotion(res[0].scores.happiness) + "\",\"" + getEmotion(res[0].scores.neutral) + "\",\"" + getEmotion(res[0].scores.sadesss) + "\"]} ] }");
+          data.append("service_name", "joyfeed_1");
 
-          predictXhr.addEventListener("readystatechange", function () {
+          var xhr = new XMLHttpRequest();
+          xhr.withCredentials = true;
+
+          xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
               console.log(this.responseText);
+              var response = JSON.parse(this.responseText);
+              var emotion = response.values[0].row[6];
+              console.log(emotion);
+              document.getElementById('emotion').textContent = 'Your emotion is ' + emotion.toLowerCase() + '.';
+              document.getElementById('tweet').textContent = 'Analyzing tweets...';
+
+              chrome.tabs.executeScript({
+                code: 'var mood = "' + emotion + '"; var stream = document.getElementsByClassName("expanding-stream-item"); for (var i = 0; i < stream.length; i++) {var tweet = stream[i].getElementsByTagName("p")[0].innerText; var data = new FormData(); var xhr = new XMLHttpRequest(); xhr.withCredentials = true; xhr.addEventListener("readystatechange", function () {if (this.readyState === 4) {var score = JSON.parse(this.responseText).aggregate.score; if (score < 0 && mood === "NEGATIVE") {console.log(document.getElementById(stream[i].id)); document.getElementById(stream[i].id).style.backgroundColor="red"; document.getElementById(stream[i].id).className += " joyfeed-filtered"; } else if (score > 0) {document.getElementById(stream[i].id).style.backgroundColor="green"; } else if (score < -0.5 && mood === "NEUTRAL") {console.log(document.getElementById(stream[i].id)); document.getElementById(stream[i].id).style.backgroundColor="red"; document.getElementById(stream[i].id).className += " joyfeed-filtered"; } } }); xhr.open("GET", "https://api.havenondemand.com/1/api/sync/analyzesentiment/v1?apikey=8c7df011-ee33-4e34-a234-5204d5a3206e&text=" + tweet, false); xhr.setRequestHeader("cache-control", "no-cache"); xhr.setRequestHeader("postman-token", "8372a06a-5e9b-6bfe-c1ff-ae3c5a3c6487"); xhr.send(data); } document.getElementById("tweet").textContent = "Tweets analyzed!";'
+              });
             }
           });
 
-          predictXhr.open("POST", "https://api.havenondemand.com/1/api/sync/predict/v1?apikey=8c7df011-ee33-4e34-a234-5204d5a3206e");
-          predictXhr.setRequestHeader("cache-control", "no-cache");
+          xhr.open("POST", "https://api.havenondemand.com/1/api/sync/predict/v1?apikey=8c7df011-ee33-4e34-a234-5204d5a3206e");
+          xhr.setRequestHeader("cache-control", "no-cache");
+          xhr.setRequestHeader("postman-token", "374c63f2-c520-42a4-c33a-2dcca4483997");
 
-          predictXhr.send(predictData);
+          xhr.send(data);
 
-          document.getElementById('emotion').textContent = 'Your emotion is positive.';
-
-          // chrome.tabs.executeScript({
-          //   code: 'var mood = "NEGATIVE"; var stream = document.getElementsByClassName("expanding-stream-item"); for (var i = 0; i < stream.length; i++) {var tweet = stream[i].getElementsByTagName("p")[0].innerText; var data = new FormData(); var xhr = new XMLHttpRequest(); xhr.withCredentials = true; xhr.addEventListener("readystatechange", function () {if (this.readyState === 4) {var score = JSON.parse(this.responseText).aggregate.score; if (score < 0 && mood === "NEGATIVE") {console.log(document.getElementById(stream[i].id)); document.getElementById(stream[i].id).style.backgroundColor="red"; document.getElementById(stream[i].id).className += " joyfeed-filtered"; } else if (score > 0) {document.getElementById(stream[i].id).style.backgroundColor="green"; } } }); xhr.open("GET", "https://api.havenondemand.com/1/api/sync/analyzesentiment/v1?apikey=8c7df011-ee33-4e34-a234-5204d5a3206e&text=" + tweet, false); xhr.setRequestHeader("cache-control", "no-cache"); xhr.setRequestHeader("postman-token", "8372a06a-5e9b-6bfe-c1ff-ae3c5a3c6487"); xhr.send(data); }'
-          // });
+          document.getElementById('emotion').textContent = 'Your emotion is...';
         }
       });
 
