@@ -1,11 +1,8 @@
 var mood = "NEGATIVE";
 var stream = document.getElementsByClassName("expanding-stream-item");
-var tweets = [];
-var counter = 0;
 
 for (var i = 0; i < stream.length; i++) {
     var tweet = stream[i].getElementsByTagName("p")[0].innerText;
-    tweets.push(stream[i].id);
 
     var data = new FormData();
 
@@ -14,16 +11,13 @@ for (var i = 0; i < stream.length; i++) {
 
 	xhr.addEventListener("readystatechange", function () {
 	  if (this.readyState === 4) {
-	  	console.log(tweets[counter]);
-	  	var element = tweets[counter];
 	    console.log(JSON.parse(this.responseText));
 	    var score = JSON.parse(this.responseText).aggregate.score;
 
-	    counter++;
-
 	    if (score < 0 && mood === "NEGATIVE") {
-	    	console.log(document.getElementById(element));
-	    	document.getElementById(element).style.backgroundColor="red";
+	    	console.log(document.getElementById(stream[i].id));
+	    	document.getElementById(stream[i].id).style.backgroundColor="red";
+	    	document.getElementById(stream[i].id).className += " joyfeed-filtered";
 	    }
 	  }
 	});
