@@ -6,10 +6,30 @@
       body {
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
+        background-color: #71d070;
+      }
+      #joyify {
+        padding-top: 3px;
+      }
+      #hide {
+        -webkit-border-radius: 5;
+        -moz-border-radius: 5;
+        border-radius: 5px;
+        color: #71d070;
+        font-size: 20px;
+        background: #ffffff;
+        padding: 10px 20px 10px 20px;
+        text-decoration: none;
       }
       #video {
         width: 640px;
         height: 480px;
+      }
+      #emotion {
+        color: white;
+      }
+      #tweet {
+        color: white;
       }
     </style>
 
@@ -18,9 +38,10 @@
   </head>
   <body>
     <video id="video" autoplay></video>
-    <button id="joyify">Joyify!</button>
-    <div id="emotion"></div>
-    <div id="tweet"></div>
+    <center><img src="logo.png" id="joyify" height="100px" width="100px"></center>
+    <center><div id="emotion"></div></center>
+    <center><div id="tweet"></div></center>
+    <br><center><button id="hide">Hide filtered tweets</button></center>
     <canvas id="photo" width="640" height="480"></canvas>
   </body>
 </html>

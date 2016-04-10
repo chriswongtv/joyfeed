@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   document.getElementById("joyify").addEventListener("click", joyify);
+  document.getElementById("hide").addEventListener("click", hide);
   navigator.webkitGetUserMedia({audio: true, video: true}, function(stream) {
     document.getElementById('video').src = webkitURL.createObjectURL(stream);
   }, function(e) {
@@ -8,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function getEmotion(score) {
+  console.log(score);
   if (score < 0.1)
     return "LOW";
   else if (score < 0.6)
@@ -40,7 +42,7 @@ function joyify() {
       console.log(res);
 
       var data = JSON.stringify({
-        "url": "http://i.imgur.com/besjShD.png"
+        "url": res
       });
 
       var xhr = new XMLHttpRequest();
@@ -57,10 +59,10 @@ function joyify() {
 
           // var dataJSON = '{"name":"name", "fields":[{"name":"Anger","type":"RICH_TEXT"}, {"name":"Contempt","type":"RICH_TEXT"}, {"name":"Disgust","type":"RICH_TEXT"}, {"name":"Fear","type":"RICH_TEXT"}, {"name":"Happiness","type":"RICH_TEXT"}, {"name":"Neutral","type":"RICH_TEXT"}, {"name":"Sadness","type":"RICH_TEXT"} ], "values":[{"row":["LOW","LOW","LOW","LOW","LOW","HIGH","LOW"]} ] }';
 
-          console.log("{\"name\":\"name\", \"fields\":[{\"name\":\"Anger\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Contempt\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Disgust\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Fear\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Happiness\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Neutral\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Sadness\",\"type\":\"RICH_TEXT\"} ], \"values\":[{\"row\":[\"" + getEmotion(res[0].scores.anger) + "\",\"" + getEmotion(res[0].scores.contempt) + "\",\"" + getEmotion(res[0].scores.disgust) + "\",\"" + getEmotion(res[0].scores.fear) + "\",\"" + getEmotion(res[0].scores.happiness) + "\",\"" + getEmotion(res[0].scores.neutral) + "\",\"" + getEmotion(res[0].scores.sadesss) + "\"]} ] }");
+          console.log("{\"name\":\"name\", \"fields\":[{\"name\":\"Anger\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Contempt\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Disgust\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Fear\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Happiness\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Neutral\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Sadness\",\"type\":\"RICH_TEXT\"} ], \"values\":[{\"row\":[\"" + getEmotion(res[0].scores.anger) + "\",\"" + getEmotion(res[0].scores.contempt) + "\",\"" + getEmotion(res[0].scores.disgust) + "\",\"" + getEmotion(res[0].scores.fear) + "\",\"" + getEmotion(res[0].scores.happiness) + "\",\"" + getEmotion(res[0].scores.neutral) + "\",\"" + getEmotion(res[0].scores.sadness) + "\"]} ] }");
 
           var data = new FormData();
-          data.append("json", "{\"name\":\"name\", \"fields\":[{\"name\":\"Anger\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Contempt\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Disgust\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Fear\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Happiness\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Neutral\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Sadness\",\"type\":\"RICH_TEXT\"} ], \"values\":[{\"row\":[\"" + getEmotion(res[0].scores.anger) + "\",\"" + getEmotion(res[0].scores.contempt) + "\",\"" + getEmotion(res[0].scores.disgust) + "\",\"" + getEmotion(res[0].scores.fear) + "\",\"" + getEmotion(res[0].scores.happiness) + "\",\"" + getEmotion(res[0].scores.neutral) + "\",\"" + getEmotion(res[0].scores.sadesss) + "\"]} ] }");
+          data.append("json", "{\"name\":\"name\", \"fields\":[{\"name\":\"Anger\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Contempt\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Disgust\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Fear\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Happiness\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Neutral\",\"type\":\"RICH_TEXT\"}, {\"name\":\"Sadness\",\"type\":\"RICH_TEXT\"} ], \"values\":[{\"row\":[\"" + getEmotion(res[0].scores.anger) + "\",\"" + getEmotion(res[0].scores.contempt) + "\",\"" + getEmotion(res[0].scores.disgust) + "\",\"" + getEmotion(res[0].scores.fear) + "\",\"" + getEmotion(res[0].scores.happiness) + "\",\"" + getEmotion(res[0].scores.neutral) + "\",\"" + getEmotion(res[0].scores.sadness) + "\"]} ] }");
           data.append("service_name", "joyfeed_1");
 
           var xhr = new XMLHttpRequest();
@@ -107,4 +109,10 @@ function joyify() {
   xhr.setRequestHeader("postman-token", "c746f944-f1b9-fb90-4f6e-5f2de8ab0848");
 
   xhr.send(data);
+}
+
+function hide() {
+  chrome.tabs.executeScript({
+    code: 'var stream = document.getElementsByClassName("joyfeed-filtered"); for (var i = 0; i < stream.length; i++) {stream[i].style.visibility="hidden"; stream[i].style.height="0px"; }'
+  });
 }
