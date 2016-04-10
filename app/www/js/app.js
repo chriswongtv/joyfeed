@@ -70,6 +70,15 @@ angular.module('joyfeed', ['ionic', 'ngCordova'])
               $scope.neutral = res.data[0].scores.neutral;
               $scope.sadness = res.data[0].scores.sadness;
               $scope.surprise = res.data[0].scores.surprise;
+
+              // start predicting user emotion
+
+              // start filtering news feed
+
+              var filter_config = {
+                "method": "GET",
+                "url":
+              }
             }
           }, function(err) {
             console.log(err);
