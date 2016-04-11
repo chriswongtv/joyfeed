@@ -22,20 +22,12 @@ public class JoyfeedParser {
 	        score = Double.parseDouble(score_new);
 	        
 	        String rank = new String();
-	        if (score < 0.01) {
-	        	rank = "EXTREMELY_LOW";
-	        } else if (score < 0.05) {
-	        	rank = "VERY_LOW";
-	        } else if (score < 0.1) {
+	        if (score < 0.1) {
 	        	rank = "LOW";
-	        } else if (score < 0.4) {
-	        	rank = "MEDIUM";
 	        } else if (score < 0.6) {
-	        	rank = "HIGH";
-	        } else if (score < 0.8) {
-	        	rank = "VERY_HIGH";
+	        	rank = "MEDIUM";
 	        } else {
-	        	rank = "EXTREMELY_HIGH";
+	        	rank = "HIGH";
 	        }
 	        
 	        System.out.println();
