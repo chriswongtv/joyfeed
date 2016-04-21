@@ -6,16 +6,17 @@ JoyFeed is a browser extension that analyzes human emotions using machine learni
 - All resources (icons, training data, parser etc.) are located in the ”resources” folder.
 
 ## APIs Used
-- [HPE Haven OnDemand](https://www.havenondemand.com/)
-** [Train Prediction API](https://dev.havenondemand.com/apis/trainpredictor)
-** [Predict API](https://dev.havenondemand.com/apis/predict)
-** [Sentiment Analysis API](https://dev.havenondemand.com/apis/analyzesentiment)
-- [Microsoft Cognitive Services’ Emotion API](https://www.microsoft.com/cognitive-services/en-us/emotion-api)
-- [Imgur API](https://api.imgur.com/)
+* [HPE Haven OnDemand](https://www.havenondemand.com/)
+ * [Train Prediction API](https://dev.havenondemand.com/apis/trainpredictor)
+ * [Predict API](https://dev.havenondemand.com/apis/predict)
+ * [Sentiment Analysis API](https://dev.havenondemand.com/apis/analyzesentiment)
+* [Microsoft Cognitive Services’ Emotion API](https://www.microsoft.com/cognitive-services/en-us/emotion-api)
+* [Imgur API](https://api.imgur.com/)
 
 ## How To Use
 ### Pre-Installation Instructions
 As JoyFeed utilizes the APIs listed above to function, you are required to sign up for each service in order to obtain an API key for all of them.
+
 1. Clone or download [JoyFeed’s repository](https://github.com/chriswongtv/joyfeed).
 2. Navigate to [HPE Haven OnDemand’s sign up page](https://www.havenondemand.com/signup.html) and sign up for an account.
 3. Navigate to [HPE Haven OnDemand’s API keys page](https://www.havenondemand.com/account/api-keys.html) and copy the API key.
@@ -29,6 +30,7 @@ As JoyFeed utilizes the APIs listed above to function, you are required to sign 
 
 ### Training HPE Haven OnDemand’s Prediction Model
 In order to use machine learning to predict how the user is feeling, we have to train the prediction model first. Since Haven OnDemand’s Predict API can only access models trained on the same account, you will have to train it manually using the dataset we provide.
+
 1. Navigate to [HPE Haven OnDemand’s Train Prediction’s “Try It” page](https://dev.havenondemand.com/apis/trainpredictor#try). Sign in to your account if you haven’t done so.
 2. Under “Parameters - file”, click “Select File”. Navigate to your JoyFeed folder and select <code>resources/train.csv</code>.
 3. Under “prediction_field”, enter “Emotion” (case-sensitive).
