@@ -15,13 +15,12 @@
     "open_in_tab": true
   },
   "background": {
-    "scripts": ["jquery.js", "background.js"]
+    "scripts": ["background.js"]
   },
   "content_scripts": [
     {
       "matches": ["http://www.twitter.com/*"],
-      //"css": ["mystyles.css"],
-      "js": ["jquery.js", "twitter.js"]
+      "js": ["twitter.js"]
     }
   ],
   "permissions": [
